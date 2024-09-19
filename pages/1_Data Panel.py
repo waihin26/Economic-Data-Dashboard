@@ -2,6 +2,7 @@ import streamlit as st
 import time
 import numpy as np
 import pandas as pd
+from data_fetcher.fred import continued_claims
 
 st.set_page_config(page_title="Data Panel", page_icon="📈")
 
@@ -10,7 +11,7 @@ st.sidebar.header("Data Panel")
 ##################################################choose data you want to see
 option = st.selectbox(
     "Choose data you want to see",
-    ('data1','data2','data3'),
+    ('data1','data2','Continued Claims'),
 )
 ##################################################introduction for this data
 st.write(
@@ -32,6 +33,16 @@ with col4:
 
 if option=='data1':
     chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
+    if "ma" not in st.session_state:
+        # set the initial default value of the slider widget
+        st.session_state.ma = 1
+    chart_data=chart_data.rolling(st.session_state.ma).mean()
+    chart = st.line_chart(chart_data)
+
+    ma = st.slider("Moving Average", 1, 8, step=2,key='ma')
+
+elif option=='Continued Claims':
+    chart_data = continued_claims(start_date, end_date)
     if "ma" not in st.session_state:
         # set the initial default value of the slider widget
         st.session_state.ma = 1

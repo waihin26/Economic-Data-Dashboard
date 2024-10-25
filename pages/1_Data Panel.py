@@ -2,7 +2,6 @@ import streamlit as st
 import time
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from data_fetcher.fred import continued_claims
 
 st.set_page_config(page_title="Data Panel", page_icon="📈")
@@ -51,6 +50,3 @@ elif option=='Continued Claims':
     chart = st.line_chart(chart_data)
 
     ma = st.slider("Moving Average", 1, 8, step=2,key='ma')
-
-    # Display the chart
-st.line_chart(chart_data)
